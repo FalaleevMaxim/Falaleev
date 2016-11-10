@@ -42,6 +42,6 @@ public interface Game<P> {
     boolean suggestBomb(int x, int y, P player);
 
     //Игрок открывает клетку
-    Cell openCell(int x, int y, P player);
+    CellVM[] openCell(int x, int y, P player);
 
 }
