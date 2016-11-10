@@ -20,13 +20,18 @@ public class BoardImpl implements Board {
     private int bombCount;
     private int bombsLeft;
 
+    @Override
+    public boolean hasOpenedCells() {
+        return isFieldInit;
+    }
+
     //Возвращает массив копий открытых ячеек.
     public CellVM[] getOpenedCells() {
         CellVM[] clone = new CellVM[opened.size()];
         for(int i=0;i<opened.size();i++){
             clone[i] = new CellVM(opened.get(i));
         }
-        return new CellVM[0];
+        return clone;
     }
 
     public int getFieldWidth() {
@@ -45,6 +50,13 @@ public class BoardImpl implements Board {
         return bombsLeft;
     }
 
+    @Override
+    public Cell getCell(int x, int y) {
+        if(!isFieldInit) throw new IllegalStateException("Trying to get cell value but field not initialized");
+        if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
+        return new Cell(field[y][x]);
+    }
+
     //Открывание ячейки.
     public CellVM[] openCell(int x, int y) {
         if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
@@ -56,18 +68,20 @@ public class BoardImpl implements Board {
         openCell(x,y,newOpened);
         //Новые открытые ячейки добавляются к списку открытых.
         opened.addAll(newOpened);
-        return (CellVM[])newOpened.toArray();
+        return newOpened.toArray(new CellVM[newOpened.size()]);
     }
 
     //Рекурсивная функция открытия ячеек, заполняет переданный список открытых ячеек.
     private void openCell(int x, int y, List<CellVM> newOpened){
-        //Клетка открывается и заносится в список
+        //Клетка, если не является уже открытой, открывается и заносится в список
         Cell cell = field[y][x];
+        if(cell.isOpened()) return;
         newOpened.add(new CellVM(x,y,cell.open()));
+        if(cell.isBomb()) bombsLeft--;
         //Если клетка пустая, открыть все окружающие клетки.
         if(cell.isEmpty()){
-            for(int y1 = Math.max(y-1,0); y1<=Math.min(y+1,getFieldHeight()); y1++){
-                for(int x1 = Math.max(x-1,0); x1<=Math.min(x+1,getFieldWidth()) && !(x1==x && y1==y) ; x1++) {
+            for(int y1 = Math.max(y-1,0); y1<=Math.min(y+1,getFieldHeight()-1); y1++){
+                for(int x1 = Math.max(x-1,0); x1<=Math.min(x+1,getFieldWidth()-1) && !(x1==x && y1==y) ; x1++) {
                     openCell(x1,y1,newOpened);
                 }
             }
@@ -129,8 +143,9 @@ public class BoardImpl implements Board {
             //Для каждой координаты из списка в соответствующую ячейку поля устанавливается бомба
             field[c.getY()][c.getX()].setValue(BOMB);
             //Для каждой окружающей бомбу клетки, не являющейся бомбой, значение увеличивается на 1.
-            for(int y1 = Math.max(c.getY() -1,0); y1<=Math.min(c.getY() +1,getFieldHeight()); y1++){
-                for(int x1 = Math.max(c.getX() -1,0); x1<=Math.min(c.getX() +1,getFieldWidth()) && !(x1== c.getX() && y1== c.getY()) ; x1++) {
+            for(int y1 = Math.max(c.getY() -1,0); y1<=Math.min(c.getY()+1,getFieldHeight()-1); y1++){
+                for(int x1 = Math.max(c.getX()-1,0); x1<=Math.min(c.getX() +1,getFieldWidth()-1); x1++) {
+                    if(x1== c.getX() && y1== c.getY()) continue;
                     cell = field[y1][x1];
                     if (!cell.isBomb()) {
                         cell.setValue(cell.getValue() + 1);
@@ -145,8 +160,14 @@ public class BoardImpl implements Board {
     public boolean suggestBomb(int x, int y) {
         if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
         if(!isFieldInit) throw new IllegalStateException("Trying to check bomb but field not initialized");
-        field[y][x].open();
-        return field[y][x].isBomb();
+        Cell cell = field[y][x];
+        if(!cell.isOpened()){
+            cell.open();
+            opened.add(new CellVM(x,y, cell.getValue()));
+            if(cell.isBomb()) bombsLeft--;
+        }
+
+        return cell.isBomb();
     }
 
     private boolean validateCoords(int x, int y){
