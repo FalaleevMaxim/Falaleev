@@ -1,0 +1,78 @@
+body
+{
+    background-image: url('/resources/images/bachground.jpg');
+    background-size:100%;
+}
+#frm
+{
+    position:absolute;
+    left:230px;
+    top:48;
+}
+.level
+{
+    width:90px;
+    height:20px;
+    background:radial-gradient(ellipse, #55ddff, #0081b5);
+    color:white;
+    font-weight:bold;
+    padding:10px;
+    border-radius:10px;
+}
+.level:hover
+{
+    background:radial-gradient(ellipse, #55ddff, lightblue);
+    color: darkblue;
+}
+#choose
+{
+    height:20px;
+    width:372px;
+    text-align:center;
+    background:radial-gradient(ellipse, #55ddff, #0081b5);
+    color:white;
+    font-weight:bold;
+    padding:10px;
+    border-radius:10px;
+}
+#submit
+{
+    height:35px;
+    width:370px;
+    text-align:center;
+    background:radial-gradient(ellipse, #55ddff, #0081b5);
+    color:white;
+    font-weight:bold;
+    padding:10px;
+    border-radius:10px;
+    border-style:none;
+    position:absolute;
+    top:129px;
+    left:10px;
+}
+#submit:hover
+{
+    background:radial-gradient(ellipse, #55ddff, lightblue);
+    color: darkblue;
+}
+#easy
+{
+    position:absolute;
+    left:10; top:48;
+}
+#normal
+{
+    position:absolute;
+    left:10; top:88;
+}
+#hard
+{
+    position:absolute;
+    left:120; top:48;
+}
+#custom
+{
+    position:absolute;
+    left:120;
+    top:88;
+}

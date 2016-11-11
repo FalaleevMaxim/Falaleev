@@ -1,5 +1,7 @@
 package ru.test.logic;
 
+import ru.test.ViewModel.CellVM;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,11 +164,15 @@ public class BoardImpl implements Board {
         if(!isFieldInit) throw new IllegalStateException("Trying to check bomb but field not initialized");
         Cell cell = field[y][x];
         if(!cell.isOpened()){
-            cell.open();
-            opened.add(new CellVM(x,y, cell.getValue()));
-            if(cell.isBomb()) bombsLeft--;
+            if(cell.isBomb()){
+                bombsLeft--;
+                cell.open();
+                opened.add(new CellVM(x,y, cell.getValue()));
+                return true;
+            }else{
+                return false;
+            }
         }
-
         return cell.isBomb();
     }
 

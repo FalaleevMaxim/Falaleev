@@ -1,5 +1,7 @@
 package ru.test.logic;
 
+import ru.test.ViewModel.CellVM;
+
 //Игровое поле, содержит основную логику игры.
 public interface Board {
     //Проверить, есть ли открытые клетки.

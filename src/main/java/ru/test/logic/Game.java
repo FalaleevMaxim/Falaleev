@@ -1,5 +1,7 @@
 package ru.test.logic;
 
+import ru.test.ViewModel.CellVM;
+
 import java.util.Collection;
 import java.util.Map;
 

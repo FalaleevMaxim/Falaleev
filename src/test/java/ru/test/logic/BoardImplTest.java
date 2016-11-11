@@ -1,6 +1,7 @@
 package ru.test.logic;
 
 import org.junit.Test;
+import ru.test.ViewModel.CellVM;
 
 import static org.junit.Assert.*;
 import static ru.test.logic.Board.Cell;
@@ -88,7 +89,7 @@ public class BoardImplTest {
     @Test
     public void suggestBomb(){
         Board board = new BoardImpl(10,10,20);
-        board.openCell(5,5);
+        int firstopened = board.openCell(5,5).length;
         for(int y=0;y<board.getFieldHeight();y++){
             for(int x=0;x<board.getFieldWidth();x++){
                 Cell cell = board.getCell(x, y);
@@ -104,6 +105,6 @@ public class BoardImplTest {
                 assertEquals(board.getBombsLeft(),board.getBombCount()-bombcount);
             }
         }
-        assertEquals(board.getOpenedCells().length,board.getFieldHeight()*board.getFieldWidth());
+        assertEquals(board.getOpenedCells().length-firstopened,bombcount);
     }
 }

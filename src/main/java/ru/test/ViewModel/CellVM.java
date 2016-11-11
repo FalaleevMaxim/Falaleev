@@ -1,20 +1,24 @@
-package ru.test.logic;
+package ru.test.ViewModel;
+
+import java.io.Serializable;
 
 //Содержит значение и координаты ячейки для передачи во view
-public class CellVM implements Cloneable{
+public class CellVM implements Serializable{
     public CellVM(int x, int y, Integer value) {
         this.setX(x);
         this.setY(y);
         this.setValue(value);
     }
 
+    public CellVM() {}
+
     public CellVM(CellVM other){
         this(other.getX(),other.getY(),other.getValue());
     }
 
-    private int x;
-    private int y;
-    private Integer value;
+    public int x;
+    public int y;
+    public Integer value;
 
     public Integer getValue() {
         return value;

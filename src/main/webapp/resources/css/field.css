@@ -1,0 +1,58 @@
+#field{
+    border-collapse: collapse;
+}
+.cell
+{
+    background-repeat:no-repeat;
+    background-size: contain;
+    text-align:center;
+    width:40px;
+    height: 40px;
+    user-select: none;
+}
+.closedCell
+{
+    background:linear-gradient(to bottom right, #fefcea, #f1da36);
+    border: 1px solid gray;
+}
+.closedCell:hover{
+    background:linear-gradient(to top left, #fefcea, #f1da36);
+}
+.bomb{
+    background-color: red;
+}
+.emptyCell{
+    background-color: #55ddff;
+}
+.n1
+{
+    color: blue;
+}
+.n2
+{
+    color: darkgreen;
+}
+.n3
+{
+    color: red;
+}
+.n4
+{
+    color: darkblue;
+}
+.n5
+{
+    color: brown;
+}
+.n6
+{
+    color: aqua;
+}
+.n7
+{
+    color: black;
+}
+.n8
+{
+    color: darkgray;
+}
