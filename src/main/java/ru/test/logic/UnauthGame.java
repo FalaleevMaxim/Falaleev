@@ -40,31 +40,9 @@ public class UnauthGame implements Game<Integer>{
     }
 
     @Override
-    public CellVM[] getOpenedCells() {
-        if(board ==null) return null;
-        return board.getOpenedCells();
+    public Board getBoard() {
+        return board;
     }
-
-    @Override
-    public int getFieldWidth() {
-        return board.getFieldWidth();
-        //return this.fieldWidth;
-    }
-
-    /*public void setFieldWidth(int boardWidth) {
-        if(boardWidth<2) throw new IllegalArgumentException("Field size should be at least 2x2");
-        this.fieldWidth = boardWidth;
-    }*/
-
-    public int getFieldHeight() {
-        return board.getFieldHeight();
-        //return fieldHeight;
-    }
-
-    /*public void setFieldHeight(int boardHeight) {
-        if(boardHeight<2) throw new IllegalArgumentException("Field size should be at least 2x2");
-        this.fieldHeight = boardHeight;
-    }*/
 
     @Override
     public void addPlayer(Integer player) {

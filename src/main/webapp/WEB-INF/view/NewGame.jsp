@@ -10,13 +10,13 @@
 </head>
 <body>
 <table id="field">
-    <% for (int i = 0; i<((GameProperties)request.getAttribute("properties")).getHeight(); i++){ %>
-    <tr>
-        <% for (int j=0;j<((GameProperties)request.getAttribute("properties")).getWidth();j++){ %>
-        <td class="cell closedCell" id="cell_<%=j%>_<%=i%>" title="Shift+click отметить бомбу" onclick="opencell(<%=j%>,<%=i%>)"></td>
-        <% } %>
-    </tr>
-    <% } %>
+    <c:forEach var="i" begin="0" end="${properties.height-1}">
+        <tr>
+            <c:forEach var="j" begin="0" end="${properties.width-1}">
+                <td class="cell closedCell" id="cell_${j}_${i}" title="Shift+click отметить бомбу" onclick="opencell(${j},${i})"></td>
+            </c:forEach>
+        </tr>
+    </c:forEach>
 </table>
 </body>
 </html>

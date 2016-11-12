@@ -8,10 +8,7 @@ import java.util.Map;
 //Интерфейс многопользовательской игры.
 //P - тип, которым идентифицируются игроки (например, числовой id, имя пользователя, объект игрока и т.п.)
 public interface Game<P> {
-    //3 метода вызывают соответствующие методы Board
-    CellVM[] getOpenedCells();
-    int getFieldWidth();
-    int getFieldHeight();
+    Board getBoard();
 
     //Присоединить игрока
     void addPlayer(P player);

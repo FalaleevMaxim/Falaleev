@@ -17,6 +17,8 @@ public interface Board {
     int getBombsLeft();
     //Возвращает копию ячейки поля по указанным координатам
     Cell getCell(int x, int y);
+    //Возвращает поле игры
+    Cell[][] getField();
     //Открывает ячейку и возвращает все открытые в этот ход ячейки (если ячейка пустая, будут открыты соседние ячейки)
     CellVM[] openCell(int x, int y);
     //Открывает ячейку и показывает, есть ли там бомба.
@@ -30,6 +32,7 @@ public interface Board {
         public Cell(Cell other){
             this.value = other.getValue();
             this.opened = other.isOpened();
+            this.bombSuggested = other.isBombSuggested();
         }
 
         @Override
@@ -53,6 +56,7 @@ public interface Board {
 
         private Integer value;
         private boolean opened = false;
+        private boolean bombSuggested = false;
 
         public Integer getValue() {
             return value;
@@ -66,6 +70,16 @@ public interface Board {
             opened = true;
             return value;
         }
+
+        public boolean suggestBomb(){
+            bombSuggested = true;
+            return isBomb();
+        }
+
+        public void unSuggestBomb(){
+            bombSuggested = false;
+        }
+
         public boolean isOpened() {
             return opened;
         }
@@ -80,6 +94,10 @@ public interface Board {
 
         private boolean checkValue(Integer v){
             return (!(v == null || v < 0 || v > 8) || v==BOMB);
+        }
+
+        public boolean isBombSuggested() {
+            return bombSuggested;
         }
     }
 }

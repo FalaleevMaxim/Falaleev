@@ -25,11 +25,13 @@ function opencell(x, y) {
                 value:null
             },
             function (data) {
+                var cell = $('#cell_'+x+'_'+y);
                 if(data){
-                    var cell = $('#cell_'+x+'_'+y);
                     cell.append("<img src='/resources/images/bombs/flag.png'>");
                     cell.removeAttr("onClick");
                     cell.removeAttr("title");
+                }else{
+                    cell.append("<img src='/resources/images/bombs/cross.png'>");
                 }
             }
         );
@@ -39,6 +41,7 @@ function opencell(x, y) {
 function onOpenSuccess(data){
     data.forEach(function (item, i, arr) {
         var cell = $('#cell_'+item.x+'_'+item.y)
+        cell.empty();
         if(item.value==-1){
             cell.removeClass("closedCell");
             cell.addClass("bomb");

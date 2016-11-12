@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.test.ViewModel.GameProperties;
 import ru.test.ViewModel.CellVM;
+import ru.test.logic.Board;
 import ru.test.logic.UnauthGame;
 
 @Controller
@@ -19,13 +20,11 @@ public class UnauthGameController {
     public String GameStart(){
         return "GameStartForm";
     }
+
     @RequestMapping(value = "/GameStart", method = RequestMethod.POST)
-    public ModelAndView GameStartPost(@ModelAttribute GameProperties gameProperties){
+    public String GameStartPost(@ModelAttribute GameProperties gameProperties){
         game = new UnauthGame(gameProperties.getWidth(),gameProperties.getHeight(),gameProperties.getBombcount(),10);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("Game");
-        modelAndView.addObject("properties",gameProperties);
-        return modelAndView;
+        return "redirect:Game";
     }
 
     @RequestMapping(value = "/OpenCell", method = RequestMethod.POST)
@@ -38,5 +37,19 @@ public class UnauthGameController {
     public @ResponseBody boolean suggestBomb(@ModelAttribute CellVM cell){
         boolean isBomb = game.suggestBomb(cell.getX(), cell.getY(), null);
         return isBomb;
+    }
+
+    @RequestMapping("/Game")
+    public ModelAndView Game(){
+        ModelAndView modelAndView = new ModelAndView();
+        Board.Cell[][] field = game.getBoard().getField();
+        modelAndView.addObject("properties", new GameProperties(game.getBoard().getFieldWidth(),game.getBoard().getFieldHeight(),game.getBoard().getBombCount()));
+        if(field==null) {
+            modelAndView.setViewName("NewGame");
+        }else{
+            modelAndView.addObject("field",field);
+            modelAndView.setViewName("GameStarted");
+        }
+        return modelAndView;
     }
 }
