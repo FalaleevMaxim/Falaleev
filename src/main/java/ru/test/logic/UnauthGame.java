@@ -17,26 +17,36 @@ public class UnauthGame implements Game<Integer>{
     private Board board;
     private boolean started = false;
     private int score;
-    private boolean loose = false;
+    private byte result = 0;
     private long startTime;
+    private long endTime;
     private int startScore;
-//    private int fieldWidth;
-//    private int fieldHeight;
-//    private int bombcount;
-//
-//    public void setBombCount(int count){
-//        if(bombcount>fieldWidth*fieldHeight) throw new IllegalArgumentException("Bomb count should be less than half of cells count");
-//        this.bombcount = count;
-//    }
-//
-//    public void setStartScore(int score){
-//        if(score>0 && score<=300) this.score = score;
-//        else throw new IllegalArgumentException("Score should be between 1 and 300");
-//    }
+
+    private boolean isLoose(){
+        if(result<0) return true;
+        if(result>0) return false;
+        if(!started) return false;
+        if(System.currentTimeMillis()/1000-startTime>score) loose();
+        return result<0;
+    }
+
+    private boolean isWin(){
+        return result>0;
+    }
+
+    private void loose(){
+        result = -1;
+        if(System.currentTimeMillis()/1000-startTime>score) endTime = startTime+score*1000;
+        else endTime = System.currentTimeMillis();
+    }
+
+    private void win(){
+        endTime = System.currentTimeMillis();
+        result = 1;
+    }
 
     private void addScore(int addCount){
         score+=addCount;
-        //if((System.currentTimeMillis()/1000-startTime)>score) loose = true;
     }
 
     @Override
@@ -67,6 +77,7 @@ public class UnauthGame implements Game<Integer>{
     @Override
     public void start() {
         startTime = System.currentTimeMillis()/1000;
+        started = true;
     }
 
     @Override
@@ -76,43 +87,51 @@ public class UnauthGame implements Game<Integer>{
 
     @Override
     public boolean isFinished() {
-        return false;
+        return isLoose()||isWin();
     }
 
     @Override
     public Map<Integer, Integer> getScores() {
         HashMap<Integer,Integer> scores = new HashMap<>();
-        scores.put(0,score);
+        scores.put(0,getScore(null));
         return scores;
     }
 
     @Override
     public Integer getScore(Integer player) {
-        return score;
+        if(!started) return score;
+        return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())/1000-startTime));
+    }
+
+    @Override
+    public long getStartTime() {
+        return startTime;
     }
 
     @Override
     public boolean suggestBomb(int x, int y, Integer player) {
-        if(loose) throw new IllegalStateException("Game already finished! You loosed.");
+        if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         if(board.suggestBomb(x,y)){
             addScore(5);
+            if(board.getBombsLeft()==0){
+                win();
+            }
             return true;
         }else{
             addScore(-15);
             return false;
         }
-
     }
 
     @Override
     public CellVM[] openCell(int x, int y, Integer player) {
-        if(loose) throw new IllegalStateException("Game already finished! You loosed.");
-        if(!started) start();
+        if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         CellVM[] opened = board.openCell(x,y);
         if(opened.length>0){
             if(opened[0].getValue()!=Board.Cell.BOMB) addScore(3);
-            else loose=true;
+            else loose();
         }
+        if(!started) start();
         return opened;
     }
 }

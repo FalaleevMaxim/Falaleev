@@ -1,10 +1,7 @@
 package ru.test.Controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.test.ViewModel.GameProperties;
 import ru.test.ViewModel.CellVM;
@@ -23,7 +20,7 @@ public class UnauthGameController {
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.POST)
     public String GameStartPost(@ModelAttribute GameProperties gameProperties){
-        game = new UnauthGame(gameProperties.getWidth(),gameProperties.getHeight(),gameProperties.getBombcount(),10);
+        game = new UnauthGame(gameProperties.getWidth(),gameProperties.getHeight(),gameProperties.getBombcount(),gameProperties.getScore());
         return "redirect:Game";
     }
 
@@ -43,7 +40,8 @@ public class UnauthGameController {
     public ModelAndView Game(){
         ModelAndView modelAndView = new ModelAndView();
         Board.Cell[][] field = game.getBoard().getField();
-        modelAndView.addObject("properties", new GameProperties(game.getBoard().getFieldWidth(),game.getBoard().getFieldHeight(),game.getBoard().getBombCount()));
+        modelAndView.addObject("properties", new GameProperties(game.getBoard().getFieldWidth(),game.getBoard().getFieldHeight(),game.getBoard().getBombsLeft(),game.getScore(null)));
+        modelAndView.addObject("isFinished",game.isFinished());
         if(field==null) {
             modelAndView.setViewName("NewGame");
         }else{
@@ -52,4 +50,10 @@ public class UnauthGameController {
         }
         return modelAndView;
     }
+
+    @RequestMapping("/Score")
+    public @ResponseBody int checkScore(){
+        return game.getScore(null);
+    }
+
 }

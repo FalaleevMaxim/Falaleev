@@ -37,6 +37,8 @@ public interface Game<P> {
     //Получить очки игрока
     Integer getScore(P player);
 
+    long getStartTime();
+
     //Игрок предполагает что в клетке бомба
     boolean suggestBomb(int x, int y, P player);
 

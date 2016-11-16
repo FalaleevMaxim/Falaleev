@@ -4,11 +4,13 @@ public class GameProperties {
     private int width;
     private int height;
     private int bombcount;
+    private int score;
 
-    public GameProperties(int width, int height, int bombcount) {
+    public GameProperties(int width, int height, int bombcount,int score) {
         this.width = width;
         this.height = height;
         this.bombcount = bombcount;
+        this.score = score;
     }
 
     public GameProperties() {
@@ -37,5 +39,13 @@ public class GameProperties {
 
     public void setBombcount(int bombcount) {
         this.bombcount = bombcount;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

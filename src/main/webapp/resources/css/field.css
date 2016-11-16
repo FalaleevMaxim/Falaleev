@@ -56,3 +56,24 @@
 {
     color: darkgray;
 }
+@font-face {
+    src: url('/resources/fonts/crystal.TTF');
+    font-family: crystal;
+}
+#scorediv{
+    display: inline-block;
+    font-family: crystal;
+    border: 2px solid saddlebrown;
+    background-color: black;
+    text-shadow: 0 0 3px;
+    padding: 3px;
+}
+.score-ok{
+    color: limegreen;
+}
+.score-normal{
+    color: yellow;
+}
+.score-danger{
+    color:red;
+}

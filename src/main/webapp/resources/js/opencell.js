@@ -1,4 +1,7 @@
 var shift = false;
+var timerId=0;
+var score;
+var bombsleft;
 $(document).keydown(function(event)
 {
     if(event.which==16) shift=true;
@@ -27,25 +30,36 @@ function opencell(x, y) {
             function (data) {
                 var cell = $('#cell_'+x+'_'+y);
                 if(data){
-                    cell.append("<img src='/resources/images/bombs/flag.png'>");
+                    cell.html("<img src='/resources/images/bombs/flag.png'>");
                     cell.removeAttr("onClick");
                     cell.removeAttr("title");
+                    if(--bombsleft==0){
+                        clearInterval(timerId);
+                        var closedCells = $('.closedCell');
+                        closedCells.removeAttr("onClick");
+                        closedCells.removeAttr("title");
+                    }
                 }else{
-                    cell.append("<img src='/resources/images/bombs/cross.png'>");
+                    cell.html("<img src='/resources/images/bombs/cross.png'>");
                 }
+                getScore();
             }
         );
     }
 }
-
 function onOpenSuccess(data){
+    if(timerId==0) timer();
     data.forEach(function (item, i, arr) {
-        var cell = $('#cell_'+item.x+'_'+item.y)
+        var cell = $('#cell_'+item.x+'_'+item.y);
         cell.empty();
         if(item.value==-1){
             cell.removeClass("closedCell");
             cell.addClass("bomb");
             cell.css("background-image","url(/resources/images/bombs/bomb"+Math.round(Math.random()*(14))+".jpg)");
+            clearInterval(timerId);
+            var closedCells = $('.closedCell');
+            closedCells.removeAttr("onClick");
+            closedCells.removeAttr("title");
         }else{
             cell.removeClass("closedCell");
             cell.addClass("emptyCell");
@@ -54,6 +68,41 @@ function onOpenSuccess(data){
                 cell.addClass("n"+item.value)
             }
         }
-    })
+    });
+    getScore();
 }
+
+
+function getScore() {
+    $.get("/UnauthGame/Score",
+        {},
+        onScoreRequest
+    );
+}
+function onScoreRequest(data) {
+    score = data;
+    setScore();
+}
+
+function setScore() {
+    var scorediv = $('#scorediv');
+    scorediv.text('score: ' + score);
+    scorediv.removeClass("score-ok");
+    scorediv.removeClass("score-danger");
+    scorediv.removeClass("score-normal");
+    scorediv.addClass(score<10?"score-danger":score<20?"score-normal":"score-ok");
+}
+
+function timer() {
+    timerId = setInterval(function () {
+        setScore();
+        if(score>0) score--;
+        else clearInterval(timerId);
+    } ,1000);
+}
+
+
+
+
+
 

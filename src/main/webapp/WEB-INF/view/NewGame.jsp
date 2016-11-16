@@ -7,8 +7,15 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/field.css">
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="${pageContext.servletContext.contextPath}/resources/js/opencell.js"></script>
+    <script>
+        bombsleft = ${properties.bombcount};
+        score = ${properties.score};
+    </script>
 </head>
 <body>
+<div id="scorediv" class="score-ok">
+    score: ${properties.score}
+</div>
 <table id="field">
     <c:forEach var="i" begin="0" end="${properties.height-1}">
         <tr>
