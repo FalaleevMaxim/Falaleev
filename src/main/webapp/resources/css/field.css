@@ -1,0 +1,79 @@
+#field{
+    border-collapse: collapse;
+}
+.cell
+{
+    background-repeat:no-repeat;
+    background-size: contain;
+    text-align:center;
+    width:40px;
+    height: 40px;
+    user-select: none;
+}
+.closedCell
+{
+    background:linear-gradient(to bottom right, #fefcea, #f1da36);
+    border: 1px solid gray;
+}
+.closedCell:hover{
+    background:linear-gradient(to top left, #fefcea, #f1da36);
+}
+.bomb{
+    background-color: red;
+}
+.emptyCell{
+    background-color: #55ddff;
+}
+.n1
+{
+    color: blue;
+}
+.n2
+{
+    color: darkgreen;
+}
+.n3
+{
+    color: red;
+}
+.n4
+{
+    color: darkblue;
+}
+.n5
+{
+    color: brown;
+}
+.n6
+{
+    color: aqua;
+}
+.n7
+{
+    color: black;
+}
+.n8
+{
+    color: darkgray;
+}
+@font-face {
+    src: url('/resources/fonts/crystal.TTF');
+    font-family: crystal;
+}
+#scorediv{
+    display: inline-block;
+    font-family: crystal;
+    border: 2px solid saddlebrown;
+    background-color: black;
+    text-shadow: 0 0 3px;
+    padding: 3px;
+}
+.score-ok{
+    color: limegreen;
+}
+.score-normal{
+    color: yellow;
+}
+.score-danger{
+    color:red;
+}
