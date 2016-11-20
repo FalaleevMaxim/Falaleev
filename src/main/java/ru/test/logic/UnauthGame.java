@@ -1,6 +1,7 @@
 package ru.test.logic;
 
 import ru.test.ViewModel.CellVM;
+import ru.test.ViewModel.GameProperties;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
@@ -8,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UnauthGame implements Game<Integer>{
-    public UnauthGame(int width, int height, int bombcount, int startScore){
-        board = new BoardImpl(width,height,bombcount);
-        this.startScore = startScore;
+    public UnauthGame(GameProperties properties){
+        board = new BoardImpl(properties.getWidth(),properties.getHeight(),properties.getBombcount());
+        this.startScore = properties.getScore();
         score = startScore;
     }
 
@@ -26,7 +27,7 @@ public class UnauthGame implements Game<Integer>{
         if(result<0) return true;
         if(result>0) return false;
         if(!started) return false;
-        if(System.currentTimeMillis()/1000-startTime>score) loose();
+        if(System.currentTimeMillis()-startTime>score*1000) loose();
         return result<0;
     }
 
@@ -36,7 +37,7 @@ public class UnauthGame implements Game<Integer>{
 
     private void loose(){
         result = -1;
-        if(System.currentTimeMillis()/1000-startTime>score) endTime = startTime+score*1000;
+        if(System.currentTimeMillis()-startTime>score*1000) endTime = startTime+score*1000;
         else endTime = System.currentTimeMillis();
     }
 
@@ -56,7 +57,7 @@ public class UnauthGame implements Game<Integer>{
 
     @Override
     public void addPlayer(Integer player) {
-
+        throw new NotImplementedException();
     }
 
     @Override
@@ -76,7 +77,7 @@ public class UnauthGame implements Game<Integer>{
 
     @Override
     public void start() {
-        startTime = System.currentTimeMillis()/1000;
+        startTime = System.currentTimeMillis();
         started = true;
     }
 
@@ -100,7 +101,7 @@ public class UnauthGame implements Game<Integer>{
     @Override
     public Integer getScore(Integer player) {
         if(!started) return score;
-        return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())/1000-startTime));
+        return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())-startTime)/1000);
     }
 
     @Override

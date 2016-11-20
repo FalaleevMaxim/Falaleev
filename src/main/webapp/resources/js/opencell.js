@@ -1,3 +1,4 @@
+var id;
 var shift = false;
 var timerId=0;
 var score;
@@ -13,7 +14,7 @@ $(document).keyup(function(event)
 
 function opencell(x, y) {
     if(!shift){
-        $.post("/UnauthGame/OpenCell",
+        $.post("/UnauthGame/"+id+"/OpenCell",
             {
                 x:x,
                 y:y,
@@ -21,7 +22,7 @@ function opencell(x, y) {
             },
             onOpenSuccess);
     }else{
-        $.post("/UnauthGame/SuggestBomb",
+        $.post("/UnauthGame/"+id+"/SuggestBomb",
             {
                 x:x,
                 y:y,
@@ -74,7 +75,7 @@ function onOpenSuccess(data){
 
 
 function getScore() {
-    $.get("/UnauthGame/Score",
+    $.get("/UnauthGame/"+id+"/Score",
         {},
         onScoreRequest
     );

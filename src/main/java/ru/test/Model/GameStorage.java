@@ -1,5 +1,6 @@
 package ru.test.Model;
 
+import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Game;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ public interface GameStorage<P,I> {
     void connectGame(P player, Game<P> game);
     void connectGameById(P player, I gameId);
     //Игрок создаёт игру
-    Game<P> createGame(P player);
+    I createGame(P player, GameProperties properties);
     //Игрок покидает игру
     void quitGame(P player);
     //Получить все игры, к которым можно присоединиться
