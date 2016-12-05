@@ -4,21 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ru.test.Model.UnauthGameStorage;
+import ru.test.model.GameStorage;
+import ru.test.model.UnauthGameStorage;
 import ru.test.ViewModel.GameProperties;
 import ru.test.ViewModel.CellVM;
 import ru.test.logic.Board;
 import ru.test.logic.Game;
-import ru.test.logic.UnauthGame;
 
 @Controller
 @RequestMapping(value = "/UnauthGame")
 public class UnauthGameController {
     @Autowired
-    public UnauthGameController(UnauthGameStorage games) {
+    public UnauthGameController(GameStorage<Integer,Integer> games) {
         this.games = games;
     }
-    private UnauthGameStorage games;
+    private GameStorage<Integer,Integer> games;
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.GET)
     public String GameStart(){

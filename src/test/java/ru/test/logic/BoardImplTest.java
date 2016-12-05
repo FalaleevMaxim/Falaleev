@@ -1,11 +1,13 @@
 package ru.test.logic;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.test.ViewModel.CellVM;
 
 import static org.junit.Assert.*;
 import static ru.test.logic.Board.Cell;
 
+@Ignore
 public class BoardImplTest {
     @Test
     public void constructorTest(){

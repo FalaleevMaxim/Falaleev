@@ -1,4 +1,4 @@
-package ru.test.Model;
+package ru.test.model;
 
 import org.springframework.stereotype.Repository;
 import ru.test.ViewModel.GameProperties;

@@ -1,4 +1,4 @@
-package ru.test.Model;
+package ru.test.model;
 
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Game;
