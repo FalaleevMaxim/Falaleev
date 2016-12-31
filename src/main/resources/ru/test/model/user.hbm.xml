@@ -14,5 +14,7 @@
         </id>
 
         <property name="userName" column="username" type="string"/>
+        <property name="password" column="password" type="string"/>
+        <property name="realName" column="real_name" type="string"/>
     </class>
 </hibernate-mapping>

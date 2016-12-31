@@ -25,12 +25,16 @@ public class UserStorage implements Storage<User> {
 
     @Override
     public User findById(int id) {
-        return null;
+        List<?> res = template.find("from User where id=?",id);
+        if(res.size()>0) return (User)res.get(0);
+        else return null;
     }
 
     @Override
     public User findByName(String name) {
-        return null;
+        List<?> res = template.find("from User where userName=?",name);
+        if(res.size()>0) return (User)res.get(0);
+        else return null;
     }
 
     @Transactional
@@ -41,7 +45,7 @@ public class UserStorage implements Storage<User> {
 
     @Override
     public void delete(User value) {
-
+        template.delete(value);
     }
 
     @Transactional

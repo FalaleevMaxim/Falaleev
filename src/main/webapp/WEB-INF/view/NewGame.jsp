@@ -14,6 +14,7 @@
     </script>
 </head>
 <body>
+<jsp:include page="/main/header"/>
 <div id="scorediv" class="score-ok">
     score: ${properties.score}
 </div>

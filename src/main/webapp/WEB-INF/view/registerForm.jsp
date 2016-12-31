@@ -5,8 +5,10 @@
 </head>
 <body>
     <form method="post">
-        Username: <input type="text" name="userName">
-        <input type="hidden" name="id" value="0">
+        Username: <input type="text" name="userName"><br>
+        Real name: <input type="text" name="realName"><br>
+        Password: <input type="password" name="password"><br>
+        Confirmation: <input type="password" name="passConfirm">
         <input type="submit">
     </form>
 </body>

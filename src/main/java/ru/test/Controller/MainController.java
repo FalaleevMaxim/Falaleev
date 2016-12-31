@@ -1,17 +1,33 @@
 package ru.test.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import ru.test.model.Storage;
+import ru.test.model.User;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/main")
 public class MainController {
-    @RequestMapping(value = "a",method = RequestMethod.GET)
-    public ModelAndView main(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("main");
-        return modelAndView;
+    private Storage<User> userStorage;
+
+    @Autowired
+    public MainController(Storage<User> userStorage) {
+        this.userStorage = userStorage;
+    }
+
+    @RequestMapping(value = "/header")
+    public String header(Model model){
+        if(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken){
+            return "unauthheader";
+        }else{
+            User user = userStorage.findByName((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            model.addAttribute("UserName",user.getUserName());
+            model.addAttribute("RealName",user.getRealName());
+            return "authheader";
+        }
     }
 }

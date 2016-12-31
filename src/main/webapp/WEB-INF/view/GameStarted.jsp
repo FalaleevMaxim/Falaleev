@@ -22,6 +22,7 @@
     </script>
 </head>
 <body>
+<jsp:include page="/main/header"/>
 <div id="scorediv">
     score:
 </div>

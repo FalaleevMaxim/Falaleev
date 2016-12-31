@@ -3,22 +3,30 @@ package ru.test.model;
 import org.springframework.stereotype.Repository;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Game;
-import ru.test.logic.UnauthGame;
+import ru.test.logic.SinglePlayerGame;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-public class UnauthGameStorage implements GameStorage<Integer,Integer>{
+@Repository("UnauthGames")
+public class UnauthGameStorage implements GameStorage<Integer,String>{
     public UnauthGameStorage() {}
 
-    List<Game<Integer>> games = new ArrayList<>();
+    private Map<String,Game<Integer>> games = new ConcurrentHashMap<>();
 
     @Override
-    public Game<Integer> getGameById(Integer id) {
+    public Game<Integer> getGameById(String id) {
         return games.get(id);
+    }
+
+    @Override
+    public String createGame(Integer player,GameProperties properties) {
+        Game<Integer> game = new SinglePlayerGame<>(properties);
+        String id = UUID.randomUUID().toString();
+        games.put(id,game);
+        return id;
     }
 
     @Override
@@ -27,29 +35,7 @@ public class UnauthGameStorage implements GameStorage<Integer,Integer>{
     }
 
     @Override
-    public void connectGame(Integer player, Game<Integer> game) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void connectGameById(Integer player, Integer gameId) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public Integer createGame(Integer player,GameProperties properties) {
-        Game<Integer> game = new UnauthGame(properties);
-        games.add(game);
-        return games.size()-1;
-    }
-
-    @Override
-    public void quitGame(Integer player) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public Collection<Game<Integer>> getOpenedGames() {
-        throw new NotImplementedException();
+    public void removeGame(String id) {
+        games.remove(id);
     }
 }

@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<jsp:include page="/main/header"/>
 <img src="${pageContext.servletContext.contextPath}/resources/images/logo.PNG" style="height:155px; border-radius:10px; float: left;">
 <div style="display: inline-block; float: left; width: 400px;">
     <div id="choose">ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ</div>
@@ -25,7 +26,7 @@
         <input type="submit" form="frm" class="level" id="submit" value="НАЧАТЬ ИГРУ">
     </div>
 </div>
-<form id="frm" action="/UnauthGame/GameStart" method="post">
+<form id="frm" action="${pageContext.request.contextPath}/${gameType}/GameStart" method="post">
     Высота:<input type="text" value="10" disabled name="height" id="tr1" size="3" style="margin-left:6px;"> <br>
     Ширина:<input type="text" value="10" disabled name="width" id="td1" size="3" > <br>
     Бомб:<input type="text" value="10" disabled name="bombcount" id="bomb" size="3" style="margin-left:21px;"><br>

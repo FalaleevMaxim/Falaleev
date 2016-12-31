@@ -5,16 +5,22 @@ import ru.test.ViewModel.GameProperties;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnauthGame implements Game<Integer>{
-    public UnauthGame(GameProperties properties){
+public class SinglePlayerGame<P> implements Game<P>{
+    public SinglePlayerGame(GameProperties properties){
         board = new BoardImpl(properties.getWidth(),properties.getHeight(),properties.getBombcount());
         this.startScore = properties.getScore();
         score = startScore;
     }
+    public SinglePlayerGame(GameProperties properties,P player){
+        this(properties);
+        this.player=player;
+    }
 
+    private P player;
     private Board board;
     private boolean started = false;
     private int score;
@@ -56,23 +62,24 @@ public class UnauthGame implements Game<Integer>{
     }
 
     @Override
-    public void addPlayer(Integer player) {
+    public void addPlayer(P player) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void removePlayer(Integer player) {
+    public void removePlayer(P player) {
         throw new NotImplementedException();
     }
 
     @Override
-    public boolean hasPlayer(Integer player) {
+    public boolean hasPlayer(P player) {
         throw new NotImplementedException();
     }
 
     @Override
-    public Collection<Integer> getPlayers() {
-        throw new NotImplementedException();
+    public Collection<P> getPlayers() {
+        if(player==null) return Collections.emptyList();
+        else return Collections.singletonList(player);
     }
 
     @Override
@@ -87,19 +94,22 @@ public class UnauthGame implements Game<Integer>{
     }
 
     @Override
+    public boolean isWinner(P player) {
+        return isWin();
+    }
+
+    @Override
     public boolean isFinished() {
         return isLoose()||isWin();
     }
 
     @Override
-    public Map<Integer, Integer> getScores() {
-        HashMap<Integer,Integer> scores = new HashMap<>();
-        scores.put(0,getScore(null));
-        return scores;
+    public Map<P, Integer> getScores() {
+        return Collections.singletonMap(player,score);
     }
 
     @Override
-    public Integer getScore(Integer player) {
+    public Integer getScore(P player) {
         if(!started) return score;
         return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())-startTime)/1000);
     }
@@ -110,7 +120,7 @@ public class UnauthGame implements Game<Integer>{
     }
 
     @Override
-    public boolean suggestBomb(int x, int y, Integer player) {
+    public boolean suggestBomb(int x, int y, P player) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         if(board.suggestBomb(x,y)){
             addScore(5);
@@ -125,7 +135,7 @@ public class UnauthGame implements Game<Integer>{
     }
 
     @Override
-    public CellVM[] openCell(int x, int y, Integer player) {
+    public CellVM[] openCell(int x, int y, P player) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         CellVM[] opened = board.openCell(x,y);
         if(opened.length>0){
