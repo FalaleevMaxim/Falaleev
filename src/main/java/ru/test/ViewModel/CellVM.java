@@ -16,31 +16,19 @@ public class CellVM implements Serializable{
         this(other.getX(),other.getY(),other.getValue());
     }
 
-    public int x;
-    public int y;
-    public Integer value;
+    private int x;
+    private int y;
+    private Integer value;
 
-    public Integer getValue() {
-        return value;
-    }
+    public int getX() {return x;}
 
-    public int getX() {
-        return x;
-    }
+    public void setX(int x) {this.x = x;}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+    public int getY() {return y;}
 
-    public int getY() {
-        return y;
-    }
+    public void setY(int y) {this.y = y;}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+    public Integer getValue() {return value;}
 
-    public void setValue(Integer value) {
-        this.value = value;
-    }
+    public void setValue(Integer value) {this.value = value;}
 }

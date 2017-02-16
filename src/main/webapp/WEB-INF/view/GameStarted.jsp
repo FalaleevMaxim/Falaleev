@@ -13,7 +13,7 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="${pageContext.servletContext.contextPath}/resources/js/opencell.js"></script>
     <script>
-        id = ${id};
+        id = "${id}";
         bombsleft = ${properties.bombcount};
         score = ${properties.score};
         setScore();

@@ -3,7 +3,6 @@ package ru.test.model;
 import org.springframework.stereotype.Repository;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Game;
-import ru.test.logic.SinglePlayerGame;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
@@ -23,9 +22,9 @@ public class UnauthGameStorage implements GameStorage<Integer,String>{
 
     @Override
     public String createGame(Integer player,GameProperties properties) {
-        Game<Integer> game = new SinglePlayerGame<>(properties);
+        //Game<Integer> game = new SinglePlayerGame<>(properties);
         String id = UUID.randomUUID().toString();
-        games.put(id,game);
+        //games.put(id,game);
         return id;
     }
 

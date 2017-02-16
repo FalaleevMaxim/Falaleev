@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.test.ViewModel.CellVM;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Board;
 import ru.test.logic.Game;
@@ -66,5 +65,25 @@ public class AuthGameController{
             modelAndView.setViewName("GameStarted");
         }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/OpenCell", method = RequestMethod.POST)
+    public @ResponseBody CellVM[] opencell(@ModelAttribute CellVM cell){
+        int id = userStorage.findByName((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        CellVM[] cells = games.getGameById(id).openCell(cell.getX(), cell.getY(), null);
+        return cells;
+    }
+
+    @RequestMapping(value = "/SuggestBomb", method = RequestMethod.POST)
+    public @ResponseBody boolean suggestBomb(@ModelAttribute CellVM cell){
+        int id = userStorage.findByName((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        boolean isBomb = games.getGameById(id).suggestBomb(cell.getX(), cell.getY(), null);
+        return isBomb;
+    }
+
+    @RequestMapping("/Score")
+    public @ResponseBody int checkScore(){
+        int id = userStorage.findByName((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return games.getGameById(id).getScore(null);
     }
 }

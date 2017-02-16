@@ -3,7 +3,7 @@ package ru.test.model;
 import org.springframework.stereotype.Repository;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Game;
-import ru.test.logic.SinglePlayerGame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class AuthGameStorage implements GameStorage<Integer,Integer> {
 
     @Override
     public Integer createGame(Integer player, GameProperties properties) {
-        games.put(player,new SinglePlayerGame<>(properties,player));
+        //games.put(player,new SinglePlayerGame<>(properties,player));
         return games.size();
     }
 

@@ -39,6 +39,7 @@ function opencell(x, y) {
                         var closedCells = $('.closedCell');
                         closedCells.removeAttr("onClick");
                         closedCells.removeAttr("title");
+                        alert("You win! Score:"+score);
                     }
                 }else{
                     cell.html("<img src='/resources/images/bombs/cross.png'>");
@@ -54,16 +55,19 @@ function onOpenSuccess(data){
         var cell = $('#cell_'+item.x+'_'+item.y);
         cell.empty();
         if(item.value==-1){
+            var closedCells = $('.closedCell');
+            closedCells.removeAttr("onClick");
+            closedCells.removeAttr("title");
             cell.removeClass("closedCell");
             cell.addClass("bomb");
             cell.css("background-image","url(/resources/images/bombs/bomb"+Math.round(Math.random()*(14))+".jpg)");
             clearInterval(timerId);
-            var closedCells = $('.closedCell');
-            closedCells.removeAttr("onClick");
-            closedCells.removeAttr("title");
+            alert("Boom!");
         }else{
             cell.removeClass("closedCell");
             cell.addClass("emptyCell");
+            cell.removeAttr("onClick");
+            cell.removeAttr("title");
             if(item.value>0){
                 cell.text(item.value);
                 cell.addClass("n"+item.value)
@@ -98,7 +102,13 @@ function timer() {
     timerId = setInterval(function () {
         setScore();
         if(score>0) score--;
-        else clearInterval(timerId);
+        else{
+            clearInterval(timerId);
+            var cells = $(".cell");
+            cells.removeAttr("onClick");
+            cells.removeAttr("title");
+            alert("Time is over!");
+        }
     } ,1000);
 }
 

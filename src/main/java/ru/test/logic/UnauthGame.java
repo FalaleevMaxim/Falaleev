@@ -6,16 +6,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-public class SinglePlayerGame<P> implements Game<P>{
-    public SinglePlayerGame(GameProperties properties){
+public class UnauthGame<P>{
+    public UnauthGame(GameProperties properties){
         board = new BoardImpl(properties.getWidth(),properties.getHeight(),properties.getBombcount());
         this.startScore = properties.getScore();
         score = startScore;
     }
-    public SinglePlayerGame(GameProperties properties,P player){
+    public UnauthGame(GameProperties properties, P player){
         this(properties);
         this.player=player;
     }
@@ -56,70 +55,45 @@ public class SinglePlayerGame<P> implements Game<P>{
         score+=addCount;
     }
 
-    @Override
-    public Board getBoard() {
-        return board;
-    }
-
-    @Override
-    public void addPlayer(P player) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void removePlayer(P player) {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public boolean hasPlayer(P player) {
         throw new NotImplementedException();
     }
 
-    @Override
     public Collection<P> getPlayers() {
         if(player==null) return Collections.emptyList();
         else return Collections.singletonList(player);
     }
 
-    @Override
     public void start() {
         startTime = System.currentTimeMillis();
         started = true;
     }
 
-    @Override
     public boolean isStarted() {
         return started;
     }
 
-    @Override
     public boolean isWinner(P player) {
         return isWin();
     }
 
-    @Override
     public boolean isFinished() {
         return isLoose()||isWin();
     }
 
-    @Override
     public Map<P, Integer> getScores() {
         return Collections.singletonMap(player,score);
     }
 
-    @Override
     public Integer getScore(P player) {
         if(!started) return score;
         return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())-startTime)/1000);
     }
 
-    @Override
     public long getStartTime() {
         return startTime;
     }
 
-    @Override
     public boolean suggestBomb(int x, int y, P player) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         if(board.suggestBomb(x,y)){
@@ -134,7 +108,6 @@ public class SinglePlayerGame<P> implements Game<P>{
         }
     }
 
-    @Override
     public CellVM[] openCell(int x, int y, P player) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
         CellVM[] opened = board.openCell(x,y);

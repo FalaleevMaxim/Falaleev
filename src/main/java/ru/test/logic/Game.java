@@ -29,6 +29,7 @@ public interface Game<P> {
     boolean isStarted();
 
     boolean isWinner(P player);
+    boolean isLooser(P player);
 
     //Проверить, закончилась ли игра
     boolean isFinished();
