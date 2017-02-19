@@ -34,12 +34,11 @@ function opencell(x, y) {
                     cell.html("<img src='/resources/images/bombs/flag.png'>");
                     cell.removeAttr("onClick");
                     cell.removeAttr("title");
-                    if(--bombsleft==0){
-                        clearInterval(timerId);
-                        var closedCells = $('.closedCell');
-                        closedCells.removeAttr("onClick");
-                        closedCells.removeAttr("title");
-                        alert("You win! Score:"+score);
+                    if(--bombsleft<=0){
+                        $.get("/UnauthGame/"+id+"/win",
+                            function (data) {
+                                if(data) onWin();
+                            });
                     }
                 }else{
                     cell.html("<img src='/resources/images/bombs/cross.png'>");
@@ -49,6 +48,17 @@ function opencell(x, y) {
         );
     }
 }
+
+function onWin() {
+    clearInterval(timerId);
+    var closedCells = $('.closedCell');
+    closedCells.removeAttr("onClick");
+    closedCells.removeAttr("title");
+    setTimeout(function () {
+        alert("You win! Score:"+score);
+    },1000);
+}
+
 function onOpenSuccess(data){
     if(timerId==0) timer();
     data.forEach(function (item, i, arr) {
@@ -62,7 +72,10 @@ function onOpenSuccess(data){
             cell.addClass("bomb");
             cell.css("background-image","url(/resources/images/bombs/bomb"+Math.round(Math.random()*(14))+".jpg)");
             clearInterval(timerId);
-            alert("Boom!");
+            setTimeout(function () {
+                alert("Boom!");
+            },1000);
+
         }else{
             cell.removeClass("closedCell");
             cell.addClass("emptyCell");
@@ -79,13 +92,13 @@ function onOpenSuccess(data){
 
 
 function getScore() {
-    $.get("/UnauthGame/"+id+"/Score",
-        {},
-        onScoreRequest
-    );
+    $.get("/UnauthGame/"+id+"/Score",onScoreRequest);
 }
 function onScoreRequest(data) {
     score = data;
+    if(score==0){
+        onTimeOut();
+    }
     setScore();
 }
 
@@ -98,16 +111,23 @@ function setScore() {
     scorediv.addClass(score<10?"score-danger":score<20?"score-normal":"score-ok");
 }
 
+function onTimeOut() {
+    clearInterval(timerId);
+    var cells = $(".cell");
+    cells.removeAttr("onClick");
+    cells.removeAttr("title");
+    setTimeout(function () {
+        alert("Time is over!");
+    },1000);
+
+}
+
 function timer() {
     timerId = setInterval(function () {
         setScore();
         if(score>0) score--;
         else{
-            clearInterval(timerId);
-            var cells = $(".cell");
-            cells.removeAttr("onClick");
-            cells.removeAttr("title");
-            alert("Time is over!");
+            getScore();
         }
     } ,1000);
 }

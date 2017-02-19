@@ -1,7 +1,6 @@
 package ru.test.logic.AuthGame;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.test.logic.AuthGame.GameCycle;
 import ru.test.model.JoinListener;
 import ru.test.service.InvitationsService;
 
@@ -23,7 +22,7 @@ public class GameInvitation<P> {
     private P owner;
     private Map<P,PlayerParticipation> players = new ConcurrentHashMap<>();
     private JoinListener<P> joinListener;
-    private boolean complete = false;
+    private boolean completed = false;
 
     public P getOwner(){
         return owner;
@@ -31,6 +30,7 @@ public class GameInvitation<P> {
 
     //Вледелец игры приглашает игрока или подтверждает запрос игрока на присоединение к игре
     public void invitePlayer(P player){
+        if(completed) throw new IllegalStateException("Invitation completed");
         if(players.containsKey(player) && players.get(player).playerConfirmed){
             players.get(player).ownerConfirmed=true;
             invitationsService.confirm(player,gameCycle);
@@ -41,7 +41,8 @@ public class GameInvitation<P> {
     }
 
     //Игрок запрашивает присоединение к игре или подтверждает приглашение
-    public void addPlayer(P player) {
+    public void joinGame(P player) {
+        if(completed) throw new IllegalStateException("Invitation completed");
         if(players.containsKey(player) && players.get(player).ownerConfirmed){
             players.get(player).playerConfirmed=true;
             joinListener.joinRequest(player);
@@ -68,6 +69,8 @@ public class GameInvitation<P> {
     }
 
     public Collection<P> complete(){
+        if(completed) throw new IllegalStateException("Invitation completed");
+        completed = true;
         ArrayList<P> confirmedPlayers = new ArrayList<>();
         Iterator<P> it = players.keySet().iterator();
         while (it.hasNext()){

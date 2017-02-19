@@ -8,6 +8,7 @@ public class User {
     private String userName;
     private String password;
     private String realName;
+    private String currentGameId;
 
     public User(int id, String userName, String password, String realName) {
         this.id = id;
@@ -49,5 +50,13 @@ public class User {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getCurrentGameId() {
+        return currentGameId;
+    }
+
+    public void setCurrentGameId(String currentGameId) {
+        this.currentGameId = currentGameId;
     }
 }

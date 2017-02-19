@@ -1,15 +1,10 @@
 package ru.test.model;
 
 import ru.test.ViewModel.GameProperties;
-import ru.test.logic.Game;
+import ru.test.logic.UnauthGame;
 
-import java.util.Collection;
-
-//Хранилище игр. I - тип идентификатора игры.
-public interface GameStorage<P,I> {
-    Game<P> getGameById(I id);
-    I createGame(P player, GameProperties properties);
-    Game<P> getGameByPlayer(P player);
+public interface GameStorage<I> {
+    UnauthGame getGame(I id);
+    I createGame(GameProperties properties);
     void removeGame(I id);
 }
-

@@ -100,14 +100,12 @@ public class MultiplayerGame<P> implements AuthGame<P> {
 
     @Override
     public boolean isWinner(P player) {
-        if(!isFinished()) return false;
-        //ToDo: check winner
-        return false;
+        return playersInfo.get(player).isWinner();
     }
 
     @Override
     public boolean isLooser(P player) {
-        return playersInfo.get(player).getOutTime() >0;
+        return playersInfo.get(player).isLooser();
     }
 
     @Override

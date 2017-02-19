@@ -2,24 +2,14 @@ package ru.test.logic;
 
 import ru.test.ViewModel.CellVM;
 import ru.test.ViewModel.GameProperties;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
-public class UnauthGame<P>{
+public class UnauthGame{
     public UnauthGame(GameProperties properties){
         board = new BoardImpl(properties.getWidth(),properties.getHeight(),properties.getBombcount());
         this.startScore = properties.getScore();
         score = startScore;
     }
-    public UnauthGame(GameProperties properties, P player){
-        this(properties);
-        this.player=player;
-    }
 
-    private P player;
     private Board board;
     private boolean started = false;
     private int score;
@@ -28,7 +18,7 @@ public class UnauthGame<P>{
     private long endTime;
     private int startScore;
 
-    private boolean isLoose(){
+    public boolean isLoose(){
         if(result<0) return true;
         if(result>0) return false;
         if(!started) return false;
@@ -36,7 +26,7 @@ public class UnauthGame<P>{
         return result<0;
     }
 
-    private boolean isWin(){
+    public boolean isWin(){
         return result>0;
     }
 
@@ -55,15 +45,6 @@ public class UnauthGame<P>{
         score+=addCount;
     }
 
-    public boolean hasPlayer(P player) {
-        throw new NotImplementedException();
-    }
-
-    public Collection<P> getPlayers() {
-        if(player==null) return Collections.emptyList();
-        else return Collections.singletonList(player);
-    }
-
     public void start() {
         startTime = System.currentTimeMillis();
         started = true;
@@ -73,19 +54,11 @@ public class UnauthGame<P>{
         return started;
     }
 
-    public boolean isWinner(P player) {
-        return isWin();
-    }
-
     public boolean isFinished() {
         return isLoose()||isWin();
     }
 
-    public Map<P, Integer> getScores() {
-        return Collections.singletonMap(player,score);
-    }
-
-    public Integer getScore(P player) {
+    public Integer getScore() {
         if(!started) return score;
         return  (int) (score - ((isFinished()? endTime :System.currentTimeMillis())-startTime)/1000);
     }
@@ -94,11 +67,11 @@ public class UnauthGame<P>{
         return startTime;
     }
 
-    public boolean suggestBomb(int x, int y, P player) {
+    public boolean suggestBomb(int x, int y) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
-        if(board.suggestBomb(x,y)){
+        if(getBoard().suggestBomb(x,y)){
             addScore(5);
-            if(board.getBombsLeft()==0){
+            if(getBoard().getBombsLeft()==0){
                 win();
             }
             return true;
@@ -108,14 +81,18 @@ public class UnauthGame<P>{
         }
     }
 
-    public CellVM[] openCell(int x, int y, P player) {
+    public CellVM[] openCell(int x, int y) {
         if(isWin() || isLoose()) throw new IllegalStateException("Game already finished!");
-        CellVM[] opened = board.openCell(x,y);
+        CellVM[] opened = getBoard().openCell(x,y);
         if(opened.length>0){
             if(opened[0].getValue()!=Board.Cell.BOMB) addScore(3);
             else loose();
         }
         if(!started) start();
         return opened;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

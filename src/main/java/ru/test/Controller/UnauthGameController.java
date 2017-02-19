@@ -6,20 +6,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ru.test.model.GameStorage;
-import ru.test.ViewModel.GameProperties;
 import ru.test.ViewModel.CellVM;
+import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Board;
-import ru.test.logic.Game;
+import ru.test.logic.UnauthGame;
+import ru.test.model.GameStorage;
 
 @Controller
 @RequestMapping(value = "/UnauthGame")
 public class UnauthGameController {
     @Autowired
-    public UnauthGameController(@Qualifier("UnauthGames")GameStorage<Integer,String> games) {
+    public UnauthGameController(@Qualifier("UnauthGames")GameStorage<String> games) {
         this.games = games;
     }
-    private GameStorage<Integer,String> games;
+    private GameStorage<String> games;
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.GET)
     public String GameStart(Model model){
@@ -29,19 +29,19 @@ public class UnauthGameController {
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.POST)
     public String GameStartPost(@ModelAttribute GameProperties gameProperties){
-        String gameId = games.createGame(null,gameProperties);
+        String gameId = games.createGame(gameProperties);
         return "redirect:"+gameId+"/Game";
     }
 
     @RequestMapping(value = "/{id}/OpenCell", method = RequestMethod.POST)
     public @ResponseBody CellVM[] opencell(@ModelAttribute CellVM cell, @PathVariable String id){
-        CellVM[] cells = games.getGameById(id).openCell(cell.getX(), cell.getY(), null);
+        CellVM[] cells = games.getGame(id).openCell(cell.getX(), cell.getY());
         return cells;
     }
 
     @RequestMapping(value = "/{id}/SuggestBomb", method = RequestMethod.POST)
     public @ResponseBody boolean suggestBomb(@ModelAttribute CellVM cell, @PathVariable String id){
-        boolean isBomb = games.getGameById(id).suggestBomb(cell.getX(), cell.getY(), null);
+        boolean isBomb = games.getGame(id).suggestBomb(cell.getX(), cell.getY());
         return isBomb;
     }
 
@@ -49,9 +49,12 @@ public class UnauthGameController {
     public ModelAndView Game(@PathVariable String id){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("id",id);
-        Game game = games.getGameById(id);
+        UnauthGame game = games.getGame(id);
         Board.Cell[][] field = game.getBoard().getField();
-        modelAndView.addObject("properties", new GameProperties(game.getBoard().getFieldWidth(),game.getBoard().getFieldHeight(),game.getBoard().getBombsLeft(),game.getScore(null)));
+        modelAndView.addObject("properties", new GameProperties(
+                game.getBoard().getFieldWidth(), game.getBoard().getFieldHeight(),
+                game.getBoard().getBombsLeft(), game.getScore())
+        );
         modelAndView.addObject("isFinished",game.isFinished());
         if(field==null) {
             modelAndView.setViewName("NewGame");
@@ -62,9 +65,19 @@ public class UnauthGameController {
         return modelAndView;
     }
 
+    @RequestMapping("/{id}/win")
+    public @ResponseBody boolean isWin(@PathVariable String id){
+        return games.getGame(id).isWin();
+    }
+
+    @RequestMapping("/{id}/loose")
+    public @ResponseBody boolean isLoose(@PathVariable String id){
+        return games.getGame(id).isLoose();
+    }
+
     @RequestMapping("/{id}/Score")
     public @ResponseBody int checkScore(@PathVariable String id){
-        return games.getGameById(id).getScore(null);
+        return games.getGame(id).getScore();
     }
 
 }

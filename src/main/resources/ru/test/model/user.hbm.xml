@@ -16,5 +16,6 @@
         <property name="userName" column="username" type="string"/>
         <property name="password" column="password" type="string"/>
         <property name="realName" column="real_name" type="string"/>
+        <property name="currentGameId" column="current_game" type="string"/>
     </class>
 </hibernate-mapping>

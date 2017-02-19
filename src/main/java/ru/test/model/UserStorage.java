@@ -50,7 +50,7 @@ public class UserStorage implements Storage<User> {
 
     @Transactional
     @Override
-    public void update(User newvalue) {
-        template.update(newvalue);
+    public void update(User newValue) {
+        template.update(newValue);
     }
 }
