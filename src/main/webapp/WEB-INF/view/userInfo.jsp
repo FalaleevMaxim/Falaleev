@@ -5,7 +5,8 @@
 </head>
 <body>
 <jsp:include page="/main/header"/>
-${user.userName}<br>
-${user.realName}<br>
+Username: ${user.userName}<br>
+Real name: ${user.realName}<br>
+<a href="/AuthGame/Game/${user.currentGameId}">Current game</a>
 </body>
 </html>

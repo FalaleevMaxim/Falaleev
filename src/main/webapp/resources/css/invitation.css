@@ -1,0 +1,32 @@
+#players{
+    background-color: gray;
+}
+
+td{
+    border-style: solid;
+    border-width: 1px;
+}
+
+.td_status_ingame{
+    background-color: green;
+}
+
+.td_status_invited{
+    background-color: #f1da36;
+}
+
+.td_status_request{
+    background-color: red;
+}
+
+.td_status_owner{
+    background-color: purple;
+}
+
+.td_action_uninvite{
+    background-color: darkred;
+}
+
+.td_action_in{
+    background-color: #55ddff;
+}

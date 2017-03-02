@@ -1,6 +1,8 @@
 package ru.test.logic.AuthGame;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
 import ru.test.model.JoinListener;
 import ru.test.service.InvitationsService;
 
@@ -8,15 +10,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GameInvitation<P> {
-    public GameInvitation(GameCycle<P> gameCycle, P owner) {
+    public GameInvitation(GameCycle<P> gameCycle, P owner, InvitationsService<P> invitationsService) {
         players.put(owner,new PlayerParticipation(owner,true,true));
         this.gameCycle = gameCycle;
         this.owner = owner;
         this.invitationsService = invitationsService;
     }
 
-    @Autowired
-    private InvitationsService<P> invitationsService;
+    private final InvitationsService<P> invitationsService;
 
     private GameCycle<P> gameCycle;
     private P owner;
@@ -31,6 +32,7 @@ public class GameInvitation<P> {
     //Вледелец игры приглашает игрока или подтверждает запрос игрока на присоединение к игре
     public void invitePlayer(P player){
         if(completed) throw new IllegalStateException("Invitation completed");
+        if(Objects.equals(player,owner))throw new IllegalArgumentException("You can not invite yourself");
         if(players.containsKey(player) && players.get(player).playerConfirmed){
             players.get(player).ownerConfirmed=true;
             invitationsService.confirm(player,gameCycle);
@@ -43,12 +45,14 @@ public class GameInvitation<P> {
     //Игрок запрашивает присоединение к игре или подтверждает приглашение
     public void joinGame(P player) {
         if(completed) throw new IllegalStateException("Invitation completed");
+        if(Objects.equals(player,owner))throw new IllegalArgumentException("You can not invite yourself");
         if(players.containsKey(player) && players.get(player).ownerConfirmed){
             players.get(player).playerConfirmed=true;
-            joinListener.joinRequest(player);
+            invitationsService.removeInvitation(player,gameCycle);
+            if(joinListener!=null) joinListener.inviteAccepted(player);
         }else{
-            players.put(player,new PlayerParticipation(player,true,false));
-            joinListener.inviteAccepted(player);
+            players.put(player,new PlayerParticipation(player,false,true));
+            joinListener.joinRequest(player);
         }
     }
 
@@ -68,8 +72,22 @@ public class GameInvitation<P> {
         return unconfirmedPlayers;
     }
 
+    public Collection<P> getPlayers(){
+        return players.keySet();
+    }
+
+    public boolean isPlayerConfirmed(P player){
+        if(!players.containsKey(player)) return false;
+        return players.get(player).playerConfirmed;
+    }
+
+    public boolean isOwnerConfirmed(P player){
+        if(!players.containsKey(player)) return false;
+        return players.get(player).ownerConfirmed;
+    }
+
     public Collection<P> complete(){
-        if(completed) throw new IllegalStateException("Invitation completed");
+        if(completed) throw new IllegalStateException("Invitation already completed");
         completed = true;
         ArrayList<P> confirmedPlayers = new ArrayList<>();
         Iterator<P> it = players.keySet().iterator();
@@ -82,6 +100,10 @@ public class GameInvitation<P> {
             }
         }
         return confirmedPlayers;
+    }
+
+    public void setJoinListener(JoinListener<P> joinListener) {
+        this.joinListener = joinListener;
     }
 
     private class PlayerParticipation{

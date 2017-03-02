@@ -25,6 +25,7 @@ public class MainController {
             return "unauthheader";
         }else{
             User user = userStorage.findByName((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            model.addAttribute("userId",user.getId());
             model.addAttribute("UserName",user.getUserName());
             model.addAttribute("RealName",user.getRealName());
             return "authheader";

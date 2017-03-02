@@ -2,13 +2,14 @@ package ru.test.logic.AuthGame;
 
 import ru.test.ViewModel.GameProperties;
 import ru.test.model.GameEventsListener;
+import ru.test.service.InvitationsService;
 
 import java.util.Collection;
 import java.util.Map;
 
 public class GameCycle<P> {
-    public GameCycle(P owner,GameProperties gameProperties){
-        invitation = new GameInvitation<>(this, owner);
+    public GameCycle(P owner, GameProperties gameProperties, InvitationsService<P> invitationsService){
+        invitation = new GameInvitation<P>(this, owner,invitationsService);
         this.gameProperties = gameProperties;
         this.owner=owner;
     }
@@ -18,7 +19,7 @@ public class GameCycle<P> {
         CONNECTIONS_GATHERING,
         GAME
     }
-    private Stage stage;
+    private Stage stage = Stage.INVITATION;
     public Stage getStage() {
         return stage;
     }

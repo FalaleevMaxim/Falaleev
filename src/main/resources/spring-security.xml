@@ -9,7 +9,7 @@
     <beans:import resource="classpath:dispatcher-servlet.xml"/>
 
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/SinglePlayerGame/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/AuthGame/**" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/User/Profile" access="hasRole('ROLE_USER')" />
 
         <!--<form-login-->

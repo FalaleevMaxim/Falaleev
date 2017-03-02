@@ -3,11 +3,12 @@ package ru.test.model;
 import ru.test.logic.AuthGame.GameCycle;
 
 //Обработчик событий приглашений для игрока
-public interface InviteListener {
+//I - тип идентификатора игры
+public interface InviteListener<I> {
     //Приглашение в игру
-    void invited(GameCycle game);
+    void invited(I game);
     //Подтверждение участия в игре
-    void confirmed(GameCycle game);
+    void confirmed(I game);
     //Приглашение отменено
-    void uninvited(GameCycle game);
+    void uninvited(I game);
 }
