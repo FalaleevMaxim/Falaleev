@@ -93,7 +93,7 @@ public interface Board {
         }
 
         private boolean checkValue(Integer v){
-            return (!(v == null || v < 0 || v > 8) || v==BOMB);
+            return (v!=null &&((v >= 0 && v <= 8) || v==BOMB));
         }
 
         public boolean isBombSuggested() {

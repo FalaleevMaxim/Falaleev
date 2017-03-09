@@ -1,11 +1,11 @@
-package ru.test.model;
+package ru.test.logic.AuthGame.Listeners.Sse;
 
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import ru.test.logic.AuthGame.GameCycle;
+import ru.test.logic.AuthGame.Listeners.InviteListener;
 
 import java.io.IOException;
 
-public class SseInviteListener<I> implements InviteListener<I>{
+public class SseInviteListener<I> implements InviteListener<I> {
     public SseInviteListener(SseEmitter emitter) {
         this.emitter = emitter;
     }

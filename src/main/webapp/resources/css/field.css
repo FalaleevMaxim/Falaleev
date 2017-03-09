@@ -68,6 +68,29 @@
     text-shadow: 0 0 3px;
     padding: 3px;
 }
+#scoreTable{
+    display: inline-block;
+    font-family: crystal;
+    border: 2px solid saddlebrown;
+    border-collapse: collapse;
+    background-color: black;
+    text-shadow: 0 0 3px;
+    padding: 3px;
+    margin-bottom: -7px;
+    margin-right: -5px;
+}
+#scoreTable tr td{
+    border: 1px solid saddlebrown;
+}
+#bombsLeft{
+    display: inline-block;
+    font-family: crystal;
+    border: 2px solid saddlebrown;
+    background-color: black;
+    color:darkred;
+    text-shadow: 0 0 3px;
+    padding: 3px;
+}
 .score-ok{
     color: limegreen;
 }
@@ -76,4 +99,25 @@
 }
 .score-danger{
     color:red;
+}
+.score-out{
+    color: gray;
+}
+.score-winner{
+    color: purple;
+}
+#gameNotifications{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    text-align: center;
+}
+
+.scoreTag{
+    opacity: 1;
+    transition: opacity 1s;
+}
+.scoreTag.hidden{
+    opacity: 0;
 }

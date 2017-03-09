@@ -1,4 +1,4 @@
-package ru.test.model;
+package ru.test.logic.AuthGame.Listeners;
 
 import ru.test.logic.AuthGame.GameCycle;
 

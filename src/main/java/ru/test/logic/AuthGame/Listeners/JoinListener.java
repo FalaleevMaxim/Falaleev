@@ -1,4 +1,4 @@
-package ru.test.model;
+package ru.test.logic.AuthGame.Listeners;
 
 //Обработчик событий для владельца игры
 public interface JoinListener<P> {

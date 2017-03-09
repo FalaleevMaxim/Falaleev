@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.test.logic.AuthGame.GameCycle;
 import ru.test.model.AuthGameStorage;
-import ru.test.model.InviteListener;
+import ru.test.logic.AuthGame.Listeners.InviteListener;
 
 import java.util.*;
 
+/**
+ * Реализация интерфейса {@link InvitationsService}
+ * @param <P> Тип идентификатора
+ */
 @Service
 public class InvitationServiceImpl<P> implements InvitationsService<P> {
     private Map<P,Set<GameCycle<P>>> invitations = new HashMap<>();
@@ -22,7 +26,14 @@ public class InvitationServiceImpl<P> implements InvitationsService<P> {
 
     @Override
     public Collection<GameCycle<P>> getInvitations(P player) {
+        if(invitations.get(player)==null) return new ArrayList<>();
         return new ArrayList<>(invitations.get(player));
+    }
+
+    @Override
+    public int getInvitationsCount(P player) {
+        if(invitations.get(player)==null) return 0;
+        return invitations.get(player).size();
     }
 
     @Override
