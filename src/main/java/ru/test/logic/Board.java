@@ -1,34 +1,85 @@
 package ru.test.logic;
 
 import ru.test.ViewModel.CellVM;
-
-//Игровое поле, содержит основную логику игры.
+/**
+ * Игровое поле, содержит основную логику игры
+ */
 public interface Board {
-    //Проверить, есть ли открытые клетки.
+    //
+
+    /**
+     * Проверяет, есть ли открытые клетки.
+     */
     boolean hasOpenedCells();
-    //Возвращает массив всех открытых ячеек
+
+    /**
+     * @return Возвращает массив всех открытых ячеек
+     */
     CellVM[] getOpenedCells();
     //Возвращает размеры поля.
+
+    /**
+     * @return Возвращает ширину поля.
+     */
     int getFieldWidth();
+
+    /**
+     * @return Возвращает высоту поля.
+     */
     int getFieldHeight();
-    //Возвращает количество бомб на поле
+
+    /**
+     * @return Возвращает количество бомб на поле
+     */
     int getBombCount();
-    //Возвращает количество неоткрытых бомб
+
+    /**
+     * @return Возвращает количество неоткрытых бомб
+     */
     int getBombsLeft();
-    //Возвращает копию ячейки поля по указанным координатам
+
+    /**
+     * @return Возвращает ячейку поля по указанным координатам
+     */
     Cell getCell(int x, int y);
-    //Возвращает поле игры
+
+    /**
+     * @return Возвращает поле игры
+     */
     Cell[][] getField();
-    //Открывает ячейку и возвращает все открытые в этот ход ячейки (если ячейка пустая, будут открыты соседние ячейки)
+    //
+
+    /**
+     * Открывает ячейку и возвращает все открытые в этот ход ячейки (если ячейка пустая, будут открыты соседние ячейки)
+     * @param x координата x ячейки
+     * @param y координата y ячейки
+     * @return массив открытых ячеек
+     */
     CellVM[] openCell(int x, int y);
-    //Открывает ячейку и показывает, есть ли там бомба.
+
+    /**
+     * Открывает ячейку и показывает, есть ли там бомба.
+     * @param x координата x ячейки
+     * @param y координата y ячейки
+     * @return true если ячейка содержит бомбу
+     */
     boolean suggestBomb(int x,int y);
 
+    /**
+     * Класс для хранения ячеек поля
+     */
     class Cell{
+        /**
+         * @param value Значаение ячейки. 0-8 показывает количество бомб вокруг клетки, -1 означает что в клетке бомба
+         */
         public Cell(int value){
             if(!checkValue(value)) throw new IllegalArgumentException("value should be between -1 and 8");
             this.value = value;
         }
+
+        /**
+         * Конструктор копирования
+         */
         public Cell(Cell other){
             this.value = other.getValue();
             this.opened = other.isOpened();
@@ -71,31 +122,47 @@ public interface Board {
             return value;
         }
 
+        /**
+         * Помечает, что клетка проверялась на наличие бомбы
+         * @return true если в клетке бомба
+         */
         public boolean suggestBomb(){
             bombSuggested = true;
             return isBomb();
         }
 
-        public void unSuggestBomb(){
-            bombSuggested = false;
-        }
-
+        /**
+         * Показывает, открыта ли клетка
+         */
         public boolean isOpened() {
             return opened;
         }
 
+        /**
+         * Проверяет, есть ли в клетке бомбп
+         */
         public boolean isBomb() {
             return value==BOMB;
         }
 
+        /**
+         * Проверяет, пустая ли клетка
+         */
         public boolean isEmpty() {
             return value==0;
         }
 
+        /**
+         * Проверяет, находится ли значение в допустимых пределах
+         * @param v проверяемое значение
+         */
         private boolean checkValue(Integer v){
             return (v!=null &&((v >= 0 && v <= 8) || v==BOMB));
         }
 
+        /**
+         * Показывает, проверялась ли клетка на аличие бомбы
+         */
         public boolean isBombSuggested() {
             return bombSuggested;
         }

@@ -1,4 +1,4 @@
-package ru.test.model;
+package ru.test.storage;
 
 import java.util.Collection;
 

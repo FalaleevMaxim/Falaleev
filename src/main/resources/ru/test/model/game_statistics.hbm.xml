@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ru.test.model.GameStatistics" table="game_statistics">
+        <id name="user_id" type="int" column="user_id"/>
+        <property name="mp_game_count" column="mp_game_count" type="int"/>
+        <property name="mp_game_wins" column="mp_game_wins" type="int"/>
+        <property name="cells_opened" column="cells_opened" type="int"/>
+        <property name="bombs_suggested" column="bombs_suggested" type="int"/>
+        <property name="bombs_suggested_success" column="bombs_suggested_success" type="int"/>
+    </class>
+</hibernate-mapping>

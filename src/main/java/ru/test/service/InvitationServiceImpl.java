@@ -3,7 +3,7 @@ package ru.test.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.test.logic.AuthGame.GameCycle;
-import ru.test.model.AuthGameStorage;
+import ru.test.storage.AuthGameStorage;
 import ru.test.logic.AuthGame.Listeners.InviteListener;
 
 import java.util.*;

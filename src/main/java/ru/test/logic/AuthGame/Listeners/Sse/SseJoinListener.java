@@ -3,7 +3,7 @@ package ru.test.logic.AuthGame.Listeners.Sse;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import ru.test.logic.AuthGame.Listeners.JoinListener;
-import ru.test.model.Storage;
+import ru.test.storage.Storage;
 import ru.test.model.User;
 
 import java.io.IOException;

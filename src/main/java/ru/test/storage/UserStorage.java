@@ -1,9 +1,10 @@
-package ru.test.model;
+package ru.test.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.test.model.User;
 
 import java.util.Collection;
 import java.util.List;

@@ -27,7 +27,7 @@ public class BoardImpl implements Board {
         return isFieldInit;
     }
 
-    //Возвращает массив копий открытых ячеек.
+    @Override
     public CellVM[] getOpenedCells() {
         CellVM[] clone = new CellVM[opened.size()];
         for(int i=0;i<opened.size();i++){
@@ -36,18 +36,22 @@ public class BoardImpl implements Board {
         return clone;
     }
 
+    @Override
     public int getFieldWidth() {
         return field[0].length;
     }
 
+    @Override
     public int getFieldHeight() {
         return field.length;
     }
 
+    @Override
     public int getBombCount() {
         return bombCount;
     }
 
+    @Override
     public int getBombsLeft() {
         return bombsLeft;
     }
@@ -71,7 +75,7 @@ public class BoardImpl implements Board {
         return fieldcopy;
     }
 
-    //Открывание ячейки.
+    @Override
     public CellVM[] openCell(int x, int y) {
         if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
         //Если это первая открытая клетка, заполнить поле так, чтобы в этой клетке не было бомбы.
@@ -85,7 +89,9 @@ public class BoardImpl implements Board {
         return newOpened.toArray(new CellVM[newOpened.size()]);
     }
 
-    //Рекурсивная функция открытия ячеек, заполняет переданный список открытых ячеек.
+    /**
+     * Рекурсивная функция открытия ячеек, заполняет переданный список открытых ячеек.
+     */
     private void openCell(int x, int y, List<CellVM> newOpened){
         //Клетка, если не является уже открытой, открывается и заносится в список
         Cell cell = field[y][x];
@@ -103,10 +109,13 @@ public class BoardImpl implements Board {
         }
     }
 
-    //Заполнение поля так, чтобы в указанной точке (первой открытой ячейке) не было бомбы
+    //
+
+    /**
+     * Заполнение поля так, чтобы в первой открытой ячейке не было бомбы
+     */
     private void initField(int x,int y){
         if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
-        //Класс для хранения координат. Локальный, поскольку больше нигде не нужен.
         class Coordinates {
             private int x;
             private int y;
@@ -172,6 +181,7 @@ public class BoardImpl implements Board {
         isFieldInit = true;
     }
 
+    @Override
     public boolean suggestBomb(int x, int y) {
         if(!validateCoords(x,y)) throw new IllegalArgumentException("Illegal coordinates {"+x+","+y+"}");
         if(!isFieldInit) throw new IllegalStateException("Trying to check bomb but field not initialized");
@@ -187,6 +197,9 @@ public class BoardImpl implements Board {
         }
     }
 
+    /**
+     * Проверка, что указанные координаты находятся в пределах поля
+     */
     private boolean validateCoords(int x, int y){
         return x>=0 && x<getFieldWidth() && y>=0 && y<getFieldHeight();
     }

@@ -10,7 +10,7 @@ import ru.test.ViewModel.CellVM;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.Board;
 import ru.test.logic.UnauthGame;
-import ru.test.model.GameStorage;
+import ru.test.storage.GameStorage;
 
 @Controller
 @RequestMapping(value = "/UnauthGame")

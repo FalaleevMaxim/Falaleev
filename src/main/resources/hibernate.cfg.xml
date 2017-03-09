@@ -21,5 +21,6 @@
 
         <!-- List of XML mapping files -->
         <mapping resource="ru/test/model/user.hbm.xml"/>
+        <mapping resource="ru/test/model/game_statistics.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

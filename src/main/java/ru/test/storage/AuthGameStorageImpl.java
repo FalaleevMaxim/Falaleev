@@ -1,4 +1,4 @@
-package ru.test.model;
+package ru.test.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -41,18 +41,5 @@ public class AuthGameStorageImpl<P> implements AuthGameStorage<P,String> {
     public void removeGame(String id) {
         idByGame.remove(gameById.get(id));
         gameById.remove(id);
-    }
-
-    @Override
-    public boolean tryRemoveGame(String id) {
-        GameCycle<P> game = gameById.get(id);
-        if(game==null) return false;
-        if(game.getPlayers().size()>0){
-            return false;
-        }
-        else{
-            removeGame(id);
-            return true;
-        }
     }
 }

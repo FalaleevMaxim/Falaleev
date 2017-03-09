@@ -4,7 +4,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import ru.test.ViewModel.GameProperties;
 import ru.test.logic.AuthGame.GameCycle;
 import ru.test.logic.AuthGame.Listeners.BeforeGameListener;
-import ru.test.model.Storage;
+import ru.test.storage.Storage;
 import ru.test.model.User;
 
 import java.io.IOException;

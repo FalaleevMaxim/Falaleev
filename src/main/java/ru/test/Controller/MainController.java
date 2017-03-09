@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.test.logic.AuthGame.GameCycle;
-import ru.test.model.AuthGameStorage;
-import ru.test.model.Storage;
+import ru.test.storage.AuthGameStorage;
+import ru.test.storage.Storage;
 import ru.test.model.User;
 import ru.test.service.InvitationsService;
 
