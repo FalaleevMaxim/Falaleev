@@ -85,7 +85,7 @@ public class GameInvitation<P> {
      */
     public void leaveGame(P player){
         if(completed) throw new IllegalStateException("Invitation completed");
-        if(Objects.equals(player,owner))throw new IllegalArgumentException("Owner can not leave game. Dissmiss game.");
+        if(Objects.equals(player,owner))throw new IllegalArgumentException("Owner can not leave game.");
         if(players.containsKey(player)){
             players.get(player).setPlayerConfirmed(false);
             joinListener.inviteRejected(player);

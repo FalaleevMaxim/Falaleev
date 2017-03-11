@@ -46,6 +46,7 @@ public class UnauthGameStorage implements GameStorage<String> {
                     }
                 }
             });
+            finishedGamesCollector.setDaemon(true);
             finishedGamesCollector.start();
         }
         return id;

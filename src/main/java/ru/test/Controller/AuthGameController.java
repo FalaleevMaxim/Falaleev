@@ -59,7 +59,7 @@ public class AuthGameController{
     }
 
     @RequestMapping("/Game")
-    public String Game(HttpServletResponse response){
+    public String Game(){
         User user = userStorage.findByName(
                 (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal()
             );

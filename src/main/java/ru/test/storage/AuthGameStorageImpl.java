@@ -6,17 +6,17 @@ import ru.test.ViewModel.GameProperties;
 import ru.test.logic.AuthGame.GameCycle;
 import ru.test.service.InvitationsService;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository("AuthGames")
 public class AuthGameStorageImpl<P> implements AuthGameStorage<P,String> {
     @Autowired
     private InvitationsService<P> invitationsService;
 
-    private Map<String,GameCycle<P>> gameById = new HashMap<>();
-    private Map<GameCycle<P>,String> idByGame = new HashMap<>();
+    private Map<String,GameCycle<P>> gameById = new ConcurrentHashMap<>();
+    private Map<GameCycle<P>,String> idByGame = new ConcurrentHashMap<>();
 
     @Override
     public GameCycle<P> getGame(String id) {

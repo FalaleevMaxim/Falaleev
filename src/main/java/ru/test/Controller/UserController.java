@@ -21,19 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/User")
 public class UserController {
     private final Storage<User> userStorage;
-    private final Storage<GameStatistics> statisticsStorage;
     private PasswordEncryptor encryptor;
 
     @Autowired
-    public UserController(Storage<User> userStorage, Storage<GameStatistics> statisticsStorage, PasswordEncryptor encryptor) {
+    public UserController(Storage<User> userStorage, PasswordEncryptor encryptor) {
         this.userStorage = userStorage;
-        this.statisticsStorage = statisticsStorage;
         this.encryptor = encryptor;
     }
 
     @RequestMapping(value="/Register",method = RequestMethod.GET)
-    public String register(Model model){
-        model.addAttribute(new User());
+    public String register(){
         return "registerForm";
     }
 
@@ -42,6 +39,11 @@ public class UserController {
         User user = new User(0,formData.getUserName(),encryptor.encryptPassword(formData.getPassword(),formData.getUserName()),formData.getRealName());
         int id = userStorage.add(user);
         return "redirect:Profile/"+id;
+    }
+
+    @RequestMapping(value = "/Login",method = RequestMethod.GET)
+    public String login(){
+        return "loginForm";
     }
 
     @RequestMapping(value = "/Profile")
@@ -58,13 +60,6 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        GameStatistics gameStatistics = statisticsStorage.findById(id);
-        if(gameStatistics==null){
-            gameStatistics = new GameStatistics(id);
-            statisticsStorage.add(gameStatistics);
-        }
-        modelAndView.addObject("game_count",gameStatistics.getMp_game_count());
-        modelAndView.addObject("games_won",gameStatistics.getMp_game_wins());
         modelAndView.setViewName("userInfo");
         modelAndView.addObject(user);
         return modelAndView;

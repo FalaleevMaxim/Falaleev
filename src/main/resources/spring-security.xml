@@ -11,12 +11,7 @@
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/AuthGame/**" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/User/Profile" access="hasRole('ROLE_USER')" />
-
-        <!--<form-login-->
-        <!--login-page="/login"-->
-        <!--default-target-url="/admin/roles"-->
-        <!--authentication-failure-url="/login?error"/>-->
-        <!--<logout logout-success-url="/login?logout" />-->
+        <form-login login-page="/User/Login"/>
         <csrf disabled="true"/>
     </http>
 

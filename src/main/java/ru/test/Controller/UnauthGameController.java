@@ -22,13 +22,13 @@ public class UnauthGameController {
     private GameStorage<String> games;
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.GET)
-    public String GameStart(Model model){
+    public String gameStart(Model model){
         model.addAttribute("gameType","UnauthGame");
         return "GameStartForm";
     }
 
     @RequestMapping(value = "/GameStart", method = RequestMethod.POST)
-    public String GameStartPost(@ModelAttribute GameProperties gameProperties){
+    public String gameStartPost(@ModelAttribute GameProperties gameProperties){
         String gameId = games.createGame(gameProperties);
         return "redirect:"+gameId+"/Game";
     }
@@ -46,7 +46,7 @@ public class UnauthGameController {
     }
 
     @RequestMapping("/{id}/Game")
-    public ModelAndView Game(@PathVariable String id){
+    public ModelAndView game(@PathVariable String id){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("id",id);
         UnauthGame game = games.getGame(id);
@@ -79,5 +79,4 @@ public class UnauthGameController {
     public @ResponseBody int checkScore(@PathVariable String id){
         return games.getGame(id).getScore();
     }
-
 }
